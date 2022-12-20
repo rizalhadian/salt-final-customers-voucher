@@ -8,6 +8,7 @@ import (
 	"salt-final-voucher/domain/interface_repo"
 	mapper_gorm_mysql "salt-final-voucher/internal/repository/gorm/mapper"
 	model_gorm_mysql "salt-final-voucher/internal/repository/gorm/models"
+	"strconv"
 	"time"
 
 	"gorm.io/gorm"
@@ -31,6 +32,21 @@ func (rcv *RepoCustomersVoucher) GetByCode(ctx context.Context, code string) (*e
 	}
 
 	entity_customers_voucher := mapper_gorm_mysql.CustomersVoucherModelToEntity(&customers_voucher_get_by_code)
+	return entity_customers_voucher, nil
+}
+
+func (rcv *RepoCustomersVoucher) GetByVoucherId(ctx context.Context, voucher_id int32) (*entity.CustomersVoucher, error) {
+	var customers_voucher_get_by_voucher_id model_gorm_mysql.ModelCustomersVoucher
+	result_get := rcv.db.First(&customers_voucher_get_by_voucher_id, "voucher_id = ?", strconv.Itoa(int(voucher_id)))
+	if result_get.Error != nil {
+		if result_get.Error == gorm.ErrRecordNotFound {
+			return nil, errors.New("404")
+		} else {
+			return nil, errors.New("500")
+		}
+	}
+
+	entity_customers_voucher := mapper_gorm_mysql.CustomersVoucherModelToEntity(&customers_voucher_get_by_voucher_id)
 	return entity_customers_voucher, nil
 }
 

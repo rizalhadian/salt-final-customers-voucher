@@ -24,9 +24,10 @@ func NewRepoCustomersVoucher(db *gorm.DB) interface_repo.InterfaceRepoCustomersV
 	}
 }
 
-func (rcv *RepoCustomersVoucher) GetByCode(ctx context.Context, code string) (*entity.CustomersVoucher, error) {
+func (rcv *RepoCustomersVoucher) GetRedeemableVoucherByCode(ctx context.Context, code string) (*entity.CustomersVoucher, error) {
 	var customers_voucher_get_by_code model_gorm_mysql.ModelCustomersVoucher
-	result_get := rcv.db.First(&customers_voucher_get_by_code, "code = ?", code)
+	current_time := time.Now()
+	result_get := rcv.db.Where("code = ?", code).Where("status = ?", "120").Where("expired_at > ?", current_time.Format(time.RFC3339)).First(&customers_voucher_get_by_code)
 	if result_get.Error == gorm.ErrRecordNotFound {
 		return nil, errors.New("404")
 	}

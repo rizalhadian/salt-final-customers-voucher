@@ -34,6 +34,7 @@ var customersVoucherStatuses = []CustomersVoucherStatus{
 	},
 }
 
+// Perlu ada penambahan transactions items apa saja yang menggunakan voucher
 type CustomersVoucher struct {
 	id                    int64
 	customer_id           int64
@@ -46,6 +47,7 @@ type CustomersVoucher struct {
 	total_discount_amount float64
 	final_total_amount    float64
 	status                int16
+	voucher               Voucher
 	created_at            time.Time
 	updated_at            sql.NullTime
 	deleted_at            sql.NullTime
@@ -63,6 +65,7 @@ type DTOCustomersVoucher struct {
 	Total_discount_amount float64
 	Final_total_amount    float64
 	Status                int16
+	Voucher               Voucher
 	Created_at            time.Time
 	Updated_at            sql.NullTime
 	Deleted_at            sql.NullTime
@@ -151,6 +154,10 @@ func (cv *CustomersVoucher) GetStatus() int16 {
 	return cv.status
 }
 
+func (cv *CustomersVoucher) GetVoucher() Voucher {
+	return cv.voucher
+}
+
 func (cv *CustomersVoucher) GetCreatedAt() time.Time {
 	return cv.created_at
 }
@@ -207,6 +214,10 @@ func (cv *CustomersVoucher) SetFinalTotalAmount(value float64) {
 
 func (cv *CustomersVoucher) SetStatus(value int16) {
 	cv.status = value
+}
+
+func (cv *CustomersVoucher) SetVoucher(value Voucher) {
+	cv.voucher = value
 }
 
 func (cv *CustomersVoucher) SetCreatedAt(value time.Time) {

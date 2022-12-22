@@ -2,62 +2,8 @@ package entity
 
 import (
 	"database/sql"
-	"errors"
-	"strings"
 	"time"
 )
-
-type TransactionStatus struct {
-	code        int16
-	section     string
-	name        string
-	description string
-}
-
-var transactionStatuses = []TransactionStatus{
-	{
-		code:        110,
-		section:     "transaction",
-		name:        "failed",
-		description: "",
-	},
-	{
-		code:        111,
-		section:     "transaction",
-		name:        "submitted",
-		description: "",
-	},
-	{
-		code:        112,
-		section:     "transaction",
-		name:        "pending",
-		description: "",
-	},
-	{
-		code:        113,
-		section:     "transaction",
-		name:        "revised",
-		description: "",
-	},
-	{
-		code:        114,
-		section:     "transaction",
-		name:        "revise",
-		description: "",
-	},
-	{
-		code:        115,
-		section:     "transaction",
-		name:        "rollback",
-		description: "",
-	},
-	{
-		code:        116,
-		section:     "transaction",
-		name:        "confirmed",
-		description: "",
-	},
-}
 
 type Transaction struct {
 	id                           int64
@@ -70,6 +16,7 @@ type Transaction struct {
 	rollback_transaction_id      int64
 	update_transaction_id        int64
 	items                        []*TransactionsItem
+	vouchers_redeemed            []*CustomersVoucher
 	created_at                   time.Time
 	updated_at                   sql.NullTime
 	deleted_at                   sql.NullTime
@@ -87,29 +34,11 @@ type DTOTransaction struct {
 	Rollback_transaction_id      int64
 	Update_transaction_id        int64
 	Items                        []*DTOTransactionsItem
+	Vouchers_redeemed            []*DTOCustomersVoucher
 	Created_at                   time.Time
 	Updated_at                   sql.NullTime
 	Deleted_at                   sql.NullTime
 	Is_generated_voucher_succeed bool
-}
-
-func ConvertTransactionStatusStringToInt(value string) (int16, error) {
-	value_lowercase := strings.ToLower(value)
-	for _, transaction_status := range transactionStatuses {
-		if transaction_status.name == value_lowercase {
-			return transaction_status.code, nil
-		}
-	}
-	return 0, errors.New("Transaction Status Not Found")
-}
-
-func ConvertTransactionStatusIntToString(value int) (string, error) {
-	for _, transaction_status := range transactionStatuses {
-		if int(transaction_status.code) == value {
-			return transaction_status.name, nil
-		}
-	}
-	return "", errors.New("Transaction Status Not Found")
 }
 
 type TotalAmountPerCategory struct {
@@ -199,14 +128,6 @@ func (t *Transaction) GetNote() string {
 
 func (t *Transaction) GetStatus() int16 {
 	return t.status
-}
-
-func (t *Transaction) GetStatusString() string {
-	status_string, err := ConvertTransactionStatusIntToString(int(t.status))
-	if err != nil {
-		panic(err)
-	}
-	return status_string
 }
 
 func (t *Transaction) GetRollbackTransactionId() int64 {

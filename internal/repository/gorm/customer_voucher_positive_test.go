@@ -49,7 +49,7 @@ func Test_CustomersVoucher_GetByCode_Positive(t *testing.T) {
 		repoCustomersVoucher = repo_gorm_mysql.NewRepoCustomersVoucher(connectionGormMysql)
 	)
 
-	data, get_err := repoCustomersVoucher.GetByCode(ctx, "BASIC-123123123123")
+	data, get_err := repoCustomersVoucher.GetRedeemableVoucherByCode(ctx, "BASIC-123123123123")
 	fmt.Println(data)
 	assert.Nil(t, get_err)
 	assert.NotNil(t, data)

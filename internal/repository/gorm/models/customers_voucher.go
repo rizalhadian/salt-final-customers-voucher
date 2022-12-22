@@ -26,7 +26,7 @@ type ModelCustomersVoucher struct {
 }
 
 func (ModelCustomersVoucher) TableName() string {
-	return "customers_voucher"
+	return "voucher"
 }
 
 // func (mcv *ModelCustomersVoucher) GetValueFromDbqTag(tag string) (any, error) {

@@ -1,9 +1,11 @@
 package http_request
 
 type Transaction struct {
-	Customer_id                 int                           `json:"customer_id,omitempty"`
-	TransactionsItems           []TransactionsItem            `json:"items,omitempty"`
-	TransactionsVoucherRedeemed []TransactionsVoucherRedeemed `json:"vouchers_redeemed,omitempty"`
+	Id                           int                           `json:"id,omitempty"`
+	Customer_id                  int                           `json:"customer_id,omitempty"`
+	Total_amount                 float64                       `json:"total_amount,omitempty"`
+	TransactionsItems            []TransactionsItem            `json:"items,omitempty"`
+	TransactionsVouchersRedeemed []TransactionsVoucherRedeemed `json:"vouchers_redeemed,omitempty"`
 }
 
 type TransactionsItem struct {
@@ -11,6 +13,7 @@ type TransactionsItem struct {
 	Items_type_id int64   `json:"items_type_id,omitempty"`
 	Price         float64 `json:"price,omitempty"`
 	Qty           int32   `json:"qty,omitempty"`
+	Total_price   float64 `json:"total_price,omitempty"`
 	Note          string  `json:"note,omitempty"`
 }
 

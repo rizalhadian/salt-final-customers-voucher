@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_CustomersVoucher_Generate_Positive(t *testing.T) {
+func Test_CustomersVoucher_Generate_Negative(t *testing.T) {
 	var (
 		ctx = context.Background()
 		// ============ Connection to Storage / Cache
@@ -26,12 +26,12 @@ func Test_CustomersVoucher_Generate_Positive(t *testing.T) {
 		// ============ Usecasese
 		usecaseCustomersVoucher = usecase.NewUsecaseCustomerVoucher(infrastructureTransaction, repoCustomersVoucher)
 	)
-	resp, err := usecaseCustomersVoucher.Generate(ctx, 0)
-	assert.Nil(t, err)
-	assert.NotNil(t, resp)
+	resp, err := usecaseCustomersVoucher.Generate(ctx, 999)
+	assert.Nil(t, resp)
+	assert.NotNil(t, err)
 }
 
-func Test_CustomersVoucher_Redeem_Positive(t *testing.T) {
+func Test_CustomersVoucher_Redeem_Negative(t *testing.T) {
 	var (
 		ctx = context.Background()
 		// ============ Connection to Storage / Cache
@@ -122,34 +122,17 @@ func Test_CustomersVoucher_Redeem_Positive(t *testing.T) {
 
 	dto_vouchers := []*entity.DTOCustomersVoucher{
 		&entity.DTOCustomersVoucher{
-			Code: "BASIC-7006791947780029",
+			Code: "XXXBASIC-7006791947780029",
 		},
 		&entity.DTOCustomersVoucher{
-			Code: "ULTI-1484611666146502",
+			Code: "XXXULTI-1484611666146502",
 		},
 		&entity.DTOCustomersVoucher{
-			Code: "PREMI-8665223082154514",
+			Code: "XXXPREMI-8665223082154514",
 		},
 	}
 
 	resp, resp_err := usecaseCustomersVoucher.Redeem(ctx, dto_transaction, dto_items, dto_vouchers)
-	assert.NotNil(t, resp)
-	assert.Nil(t, resp_err)
-
-	// fmt.Println("=======Total Amount : ")
-	// fmt.Println(resp[0].GetTotalAmount())
-	// fmt.Println("Total Discount Amount : ")
-	// fmt.Println(resp[0].GetTotalDiscountAmount())
-	// fmt.Println("Final Total Amount : ")
-	// fmt.Println(resp[0].GetFinalTotalAmount())
-
-	// fmt.Println("=======Total Amount : ")
-	// fmt.Println(resp[1].GetTotalAmount())
-	// fmt.Println("Total Discount Amount : ")
-	// fmt.Println(resp[1].GetTotalDiscountAmount())
-	// fmt.Println("Final Total Amount : ")
-	// fmt.Println(resp[1].GetFinalTotalAmount())
-
-	// assert.Nil(t, err)
-	// assert.NotNil(t, resp)
+	assert.NotNil(t, resp_err)
+	assert.Nil(t, resp)
 }
